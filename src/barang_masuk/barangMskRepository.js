@@ -41,8 +41,8 @@ const insertData = async (id_barang, tanggal_masuk, kuantitas) => {
             id_barang_masuk,
             id_barang,
             no_do,
-            tanggal_masuk,
-            kuantitas
+            tanggal_masuk: moment(tanggal_masuk),
+            kuantitas: Number(kuantitas)
         },
     });
     return barang_masuk
@@ -75,8 +75,8 @@ const update = async (id_barang_masuk,id_barang, tanggal_masuk, kuantitas) => {
             where: {id_barang_masuk},
             data: {
                 id_barang,
-                tanggal_masuk,
-                kuantitas
+                tanggal_masuk: moment(tanggal_masuk),
+                kuantitas:Number(kuantitas)
             }
         })
         return updateBarangMsk

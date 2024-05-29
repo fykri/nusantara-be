@@ -1,22 +1,30 @@
 const prisma = require("../db/prisma");
 
-const insertData = async (nama_barang, kategori, harga) => {
-  const randomNo = Math.floor(Math.random() * 99999999).toString().padStart(8, '0');
-  const id_barang = `BRG-${randomNo}`;
-  try {
-    const barang = await prisma.barang.create({
-      data: {
-        id_barang,
-        nama_barang,
-        kategori,
-        harga,
-      },
-    });
-    return barang;
-  } catch (err) {
-    console.log(err.message);
-  }
+const insertData = async (nama_barang, kategori, harga, stok) => {
+    const randomNo = Math.floor(Math.random() * 99999999).toString().padStart(8, '0');
+    const id_barang = `BRG-${randomNo}`;
+    try {
+            const barang = await prisma.barang.create({
+                data: {
+                    id_barang,
+                    nama_barang,
+                    kategori,
+                    harga: parseFloat(harga),
+                    stok: parseInt(stok),
+                },
+            });
+            return barang;
+    
+    } catch (err) {
+            console.log(err);
+    }
 };
+
+const findByname = async (nama_barang) => {
+    return await prisma.barang.findFirst({
+        where: {nama_barang}
+    })
+}
 
 const getALl = async () => {
   try {
@@ -32,20 +40,21 @@ const getALl = async () => {
 };
 
 const update = async (id_barang, nama_barang, kategori, harga) => {
-  const updateBarang = await prisma.barang.update({
-    where: { id_barang },
-    data: {
-      nama_barang,
-      kategori,
-      harga,
-    },
-  });
-  return updateBarang;
+    const updateBarang = await prisma.barang.update({
+        where: { id_barang },
+        data: {
+        nama_barang,
+        kategori,
+        harga: parseFloat(harga),
+        stok
+        },
+    });
+    return updateBarang;
 };
 
 const findById = async (id_barang) => {
   return prisma.barang.findUnique({
-    where: {
+    where: { 
       id_barang,
     },
   });
@@ -65,4 +74,5 @@ module.exports = {
   update,
   findById,
   remove,
+  findByname
 };

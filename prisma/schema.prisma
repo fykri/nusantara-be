@@ -19,10 +19,11 @@ model User {
 
 model Barang {
   id_barang       String @id
-  nama_barang     String
+  nama_barang     String 
   kategori        String
   satuan          String  @default("qty")
   harga           Float
+  stok            Int
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   barangMasuk barang_masuk[]
