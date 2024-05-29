@@ -5,7 +5,8 @@ const {
   tampilBarang,
   perbaruiBarang,
   cariBarangDenganId,
-  hapusBarang
+  hapusBarang,
+  cariBarangDenganNama
 } = require("./barangServices");
 
 
@@ -13,6 +14,16 @@ router.get('/:id_barang', async(req,res,next)=> {
     try {
         const {id_barang} = req.params
         const {status, msg, barang} = await cariBarangDenganId(id_barang)
+        res.status(status).json({msg, barang})
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.get('/:nama_barang', async(req, res, next)=> {
+    try {
+        const {nama_barang} = req.params
+        const {status, msg, barang} = await cariBarangDenganNama(nama_barang)
         res.status(status).json({msg, barang})
     } catch (error) {
         next(error)
@@ -29,9 +40,9 @@ router.get("/", async (req, res, next) => {
 });
 
 router.post("/insert", async (req, res, next) => {
-    const { nama_barang, kategori, harga } = req.body;
+    const { nama_barang, kategori, harga, stok } = req.body;
     try {
-      const { status, msg } = await tambahBarang(nama_barang, kategori, harga);
+      const { status, msg } = await tambahBarang(nama_barang, kategori, harga, stok);
       res.status(status).json(msg);
     } catch (err) {
       next(err);

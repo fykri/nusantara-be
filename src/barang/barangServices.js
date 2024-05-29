@@ -4,6 +4,7 @@ const {
   update,
   findById,
   remove,
+  findByname
 } = require("./barangRepository");
 
 const tampilBarang = async () => {
@@ -28,12 +29,12 @@ const cariBarangDenganId = async (id_barang) => {
     if (!barang) {
       return {
         status: 404,
-        msg: "barang tidak ditemukan",
+        msg: `barang tidak ditemukan`,
       };
     }
     return {
       status: 200,
-      msg: "barang ditemukan",
+      msg: `barang ${barang.nama_barang} ditemukan`,
       barang,
     };
   } catch (error) {
@@ -41,13 +42,20 @@ const cariBarangDenganId = async (id_barang) => {
   }
 };
 
-const tambahBarang = async (nama_barang, kategori, harga) => {
-  if (!nama_barang || !kategori || !harga) {
+const tambahBarang = async (nama_barang, kategori, harga, stok) => { 
+  if (!nama_barang || !kategori || !harga || !stok) {
     return {
       status: 404,
-      msg: "tambah barang gagal",
+      msg: "Sumber daya tidak ditemukan: Semua input harus diisi",
     };
   }
+
+  if(await findByname(nama_barang)) {
+    return {
+        status:409,
+        msg: `Konflik: Nama barang ${nama_barang} sudah terdaftar dalam tabel`
+    }
+}
 
   if (isNaN(harga)) {
     return {
@@ -57,12 +65,11 @@ const tambahBarang = async (nama_barang, kategori, harga) => {
   }
 
   try {
-    const hargaParsed = parseFloat(harga);
-    await insertData(nama_barang, kategori, hargaParsed);
-    return {
-      status: 200,
-      msg: "tambah barang berhasil",
-    };
+    await insertData(nama_barang, kategori,harga, stok);
+        return {
+            status: 200,
+            msg: `barang dengan nama ${nama_barang} berhasil ditambahkan`,
+        };
   } catch (err) {
     console.log(err.message);
   }
@@ -72,13 +79,13 @@ const perbaruiBarang = async (id_barang, nama_barang, kategori, harga) => {
   if (!(await findById(id_barang))) {
     return {
       status: 404,
-      msg: "barang tidak ditemukan",
+      msg: `barang ${nama_barang} tidak ditemukan`,
     };
   }
   if (!id_barang || !nama_barang || !kategori || !harga) {
     return {
       status: 404,
-      msg: "inputan tidak boleh kosong",
+      msg: "Sumber daya tidak ditemukan: Semua input harus diisi",
     };
   }
 
@@ -90,11 +97,10 @@ const perbaruiBarang = async (id_barang, nama_barang, kategori, harga) => {
   }
 
   try {
-    const hargaParsed = parseFloat(harga);
-    await update(id_barang, nama_barang, kategori, hargaParsed);
+    await update(id_barang, nama_barang, kategori, harga);
     return {
       status: 200,
-      msg: "barang berhasil di update",
+      msg: `barang ${nama_barang} berhasil di update`,
     };
   } catch (err) {
     console.log("error update", err.message);
@@ -108,12 +114,27 @@ const hapusBarang = async (id_barang) => {
       msg: "barang tidak ditemukan",
     };
   }
-  await remove(id_barang);
+  const barang = await remove(id_barang);
   return {
     status: 200,
-    msg: "barang berhasil dihapus",
+    msg: `barang ${barang.nama_barang} berhasil dihapus`,
   };
 };
+
+const cariBarangDenganNama = async (nama_barang) => {
+    const barang = await findByname(nama_barang)
+    if(!barang) {
+        return {
+            status:404,
+            msg: 'barang tidak ditemukan',
+        }
+    }
+    return {
+        status: 404,
+        msg: 'barang ditemukan',
+        barang
+    }
+}
 
 module.exports = {
   tambahBarang,
@@ -121,4 +142,5 @@ module.exports = {
   perbaruiBarang,
   cariBarangDenganId,
   hapusBarang,
+  cariBarangDenganNama
 };
