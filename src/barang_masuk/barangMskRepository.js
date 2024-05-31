@@ -1,6 +1,5 @@
-const prisma = require("../db/prisma");
+const prisma = require("../../prisma/prismaClient");
 const moment = require("moment");
-
 
 async function generateNoDo() {
     const date = moment().format("YYYYMMDD");
@@ -8,8 +7,6 @@ async function generateNoDo() {
     
     return no_do;
 }
-
-
 //logic database
 const getALl = async () => {
   const barang_masuk = await prisma.barang_masuk.findMany({
@@ -45,6 +42,7 @@ const insertData = async (id_barang, tanggal_masuk, kuantitas) => {
             kuantitas: Number(kuantitas)
         },
     });
+    
     return barang_masuk
 };
 

@@ -1,41 +1,41 @@
-
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  idUser      String @id @default(cuid())
-  username    String 
-  password    String
-  token       String? @db.VarChar(500)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+    idUser    String   @id @default(cuid())
+    username  String
+    password  String
+    token     String?  @db.VarChar(500)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Barang {
-  id_barang       String @id
-  nama_barang     String 
-  kategori        String
-  satuan          String  @default("qty")
-  harga           Float
-  stok            Int
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  barangMasuk barang_masuk[]
+    id_barang   String         @id
+    nama_barang String
+    kategori    String
+    satuan      String         @default("qty")
+    harga       Int
+    stok        Int
+    total_harga Int
+    createdAt   DateTime       @default(now())
+    updatedAt   DateTime       @updatedAt
+    barangMasuk Barang_masuk[]
 }
 
-model barang_masuk {
-  id_barang_masuk   String @id
-  id_barang         String
-  no_do             String
-  tanggal_masuk     DateTime
-  kuantitas         Int
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  barang Barang @relation(fields: [id_barang], references: [id_barang], onUpdate: Cascade)
+model Barang_masuk {
+    id_barang_masuk String   @id
+    id_barang       String
+    no_do           String
+    tanggal_masuk   DateTime
+    kuantitas       Int
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    barang          Barang   @relation(fields: [id_barang], references: [id_barang], onUpdate: Cascade, onDelete: Cascade)
 }

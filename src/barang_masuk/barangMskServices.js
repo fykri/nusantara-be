@@ -42,7 +42,7 @@ const tambahBarangMasuk= async(id_barang, tanggal_masuk, kuantitas)=> {
         const barang = await findById(id_barang)
         return {
             status:200,
-            msg: `tambah barang ${barang.nama_barang} berhasil`
+            msg: `barang ${barang.nama_barang} berhasil masuk`
         }
     } catch (error) {
         console.log(error.message);
