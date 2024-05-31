@@ -88,8 +88,8 @@ const perbaruiBarang = async (id_barang, nama_barang, kategori, harga, stok) => 
             msg: "Sumber daya tidak ditemukan: Semua input harus diisi",
         };
     }
-
-    if(await findByname(nama_barang)) {
+    const barang = await findById(id_barang)
+    if(barang.nama_barang !== nama_barang) {
         return {
             status:409,
             msg: `Konflik: Nama barang ${nama_barang} sudah terdaftar dalam tabel`
