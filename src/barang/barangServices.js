@@ -75,36 +75,43 @@ const tambahBarang = async (nama_barang, kategori, harga, stok) => {
   }
 };
 
-const perbaruiBarang = async (id_barang, nama_barang, kategori, harga) => {
-  if (!(await findById(id_barang))) {
-    return {
-      status: 404,
-      msg: `barang ${nama_barang} tidak ditemukan`,
-    };
-  }
-  if (!id_barang || !nama_barang || !kategori || !harga) {
-    return {
-      status: 404,
-      msg: "Sumber daya tidak ditemukan: Semua input harus diisi",
-    };
-  }
+const perbaruiBarang = async (id_barang, nama_barang, kategori, harga, stok) => {
+    if (!(await findById(id_barang))) {
+        return {
+            status: 404,
+            msg: `barang ${nama_barang} tidak ditemukan`,
+        };
+    }
+    if (!id_barang || !nama_barang || !kategori || !harga || !stok) {
+        return {
+            status: 404,
+            msg: "Sumber daya tidak ditemukan: Semua input harus diisi",
+        };
+    }
 
-  if (isNaN(harga)) {
-    return {
-      status: 400,
-      msg: "harga_per_satuan harus berupa angka",
-    };
-  }
+    if(await findByname(nama_barang)) {
+        return {
+            status:409,
+            msg: `Konflik: Nama barang ${nama_barang} sudah terdaftar dalam tabel`
+        }
+    }
 
-  try {
-    await update(id_barang, nama_barang, kategori, harga);
-    return {
-      status: 200,
-      msg: `barang ${nama_barang} berhasil di update`,
-    };
-  } catch (err) {
-    console.log("error update", err.message);
-  }
+    if (isNaN(harga) || isNaN(stok)) {
+        return {
+        status: 400,
+        msg: "harga atau stok harus berupa angka",
+        };
+    }
+
+    try {
+        await update(id_barang, nama_barang, kategori, harga, stok);
+        return {
+        status: 200,
+        msg: `barang ${nama_barang} berhasil di update`,
+        };
+    } catch (err) {
+        console.log("error update", err.message);
+    }
 };
 
 const hapusBarang = async (id_barang) => {
@@ -121,20 +128,6 @@ const hapusBarang = async (id_barang) => {
   };
 };
 
-const cariBarangDenganNama = async (nama_barang) => {
-    const barang = await findByname(nama_barang)
-    if(!barang) {
-        return {
-            status:404,
-            msg: 'barang tidak ditemukan',
-        }
-    }
-    return {
-        status: 404,
-        msg: 'barang ditemukan',
-        barang
-    }
-}
 
 module.exports = {
   tambahBarang,
@@ -142,5 +135,4 @@ module.exports = {
   perbaruiBarang,
   cariBarangDenganId,
   hapusBarang,
-  cariBarangDenganNama
 };

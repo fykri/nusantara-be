@@ -1,4 +1,4 @@
-const prisma = require("../db/prisma");
+const prisma = require("../../prisma/prismaClient");
 
 const insertData = async (nama_barang, kategori, harga, stok) => {
     const randomNo = Math.floor(Math.random() * 99999999).toString().padStart(8, '0');
@@ -9,8 +9,9 @@ const insertData = async (nama_barang, kategori, harga, stok) => {
                     id_barang,
                     nama_barang,
                     kategori,
-                    harga: parseFloat(harga),
+                    harga: parseInt(harga),
                     stok: parseInt(stok),
+                    total_harga: parseInt(harga * stok)
                 },
             });
             return barang;
@@ -21,9 +22,10 @@ const insertData = async (nama_barang, kategori, harga, stok) => {
 };
 
 const findByname = async (nama_barang) => {
-    return await prisma.barang.findFirst({
+    const barang = await prisma.barang.findFirst({
         where: {nama_barang}
     })
+    return barang
 }
 
 const getALl = async () => {
@@ -39,14 +41,14 @@ const getALl = async () => {
   }
 };
 
-const update = async (id_barang, nama_barang, kategori, harga) => {
+const update = async (id_barang, nama_barang, kategori, harga, stok) => {
     const updateBarang = await prisma.barang.update({
         where: { id_barang },
         data: {
         nama_barang,
         kategori,
-        harga: parseFloat(harga),
-        stok
+        harga: parseInt(harga),
+        stok: parseInt(stok)
         },
     });
     return updateBarang;

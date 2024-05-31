@@ -1,4 +1,4 @@
-const prisma = require('../db/prisma')
+const prisma = require('../../prisma/prismaClient')
 const bcrypt = require('bcrypt')
 
 const insertData =  async(username, password)=> {
