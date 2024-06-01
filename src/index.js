@@ -30,10 +30,12 @@ app.get("/user", verifyToken, (req, res) => {
 
 const user = require("./user-auth/authController");
 const barang= require("./barang/barangController")
+const pelanggan= require("./pelanggan/pelangganController")
 const barang_masuk = require('./barang_masuk/barangMskController')
 app.use("/", user);
 app.use('/barang', barang)
 app.use('/barang-masuk', barang_masuk)
+app.use('/pelanggan', pelanggan)
 
 app.use((_req, res) => {
   return res.status(404).json({
