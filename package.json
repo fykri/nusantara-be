@@ -19,7 +19,8 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
-    "moment": "^2.30.1"
+    "moment": "^2.30.1",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
     "prisma": "^5.13.0"
