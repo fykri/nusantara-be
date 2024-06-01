@@ -39,3 +39,11 @@ model Barang_masuk {
     updatedAt       DateTime @updatedAt
     barang          Barang   @relation(fields: [id_barang], references: [id_barang], onUpdate: Cascade, onDelete: Cascade)
 }
+
+model Pelanggan {
+    id_pelanggan   String @id
+    nama_pelanggan String
+    alamat         String
+    email          String
+    no_telpon      String
+}

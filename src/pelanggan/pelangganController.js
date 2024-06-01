@@ -4,20 +4,8 @@ const {
   tambahPelanggan,
   tampilPelanggan,
   perbaruiPelanggan,
-  cariPelangganDenganId,
   hapusPelanggan,
 } = require("./pelangganServices");
-
-
-router.get('/:id_pelanggan', async(req,res,next)=> {
-    try {
-        const {id_pelanggan} = req.params
-        const {status, msg, pelanggan} = await cariPelangganDenganId(id_pelanggan)
-        res.status(status).json({msg, pelanggan})
-    } catch (error) {
-        next(error)
-    }
-})
 
 
 router.get("/", async (req, res, next) => {
@@ -39,7 +27,7 @@ router.post("/insert", async (req, res, next) => {
     }
 });
 
-router.patch("/update/:id_pelanggan", async (req, res, next) => {
+router.put("/update/:id_pelanggan", async (req, res, next) => {
   try {
     const { id_pelanggan } = req.params;
     const { nama_pelanggan, alamat, email, no_telepon } = req.body;
