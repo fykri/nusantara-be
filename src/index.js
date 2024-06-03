@@ -7,11 +7,11 @@ const cors = require("cors");
 
 dotenv.config();
 app.use(
-  session({
+    session({
     secret: "secret",
     resave: false,
     saveUninitialized: true,
-  })
+    })
 );
 const port = process.env.PORT;
 app.use(cookie());
@@ -24,34 +24,34 @@ const { verifyToken } = require("./user-auth/middleware/authmiddleware");
 
 
 app.get("/user", verifyToken, (req, res) => {
-  res.send("ini halaman user");
+    res.send("ini halaman user");
 });
 
 
 const user = require("./user-auth/authController");
 const barang= require("./barang/barangController")
 const pelanggan= require("./pelanggan/pelangganController")
-const barang_masuk = require('./barang_masuk/barangMskController')
+const barang_masuk = require('./barang-masuk/barangMskController')
 app.use("/", user);
 app.use('/barang', barang)
 app.use('/barang-masuk', barang_masuk)
 app.use('/pelanggan', pelanggan)
 
 app.use((_req, res) => {
-  return res.status(404).json({
+    return res.status(404).json({
     status: false,
     message: "Are you lost?",
-  });
+    });
 });
 
 app.use((err, _req, res) => {
-  return res.status(500).json({
+    return res.status(500).json({
     status: false,
     message: "Internal server error " + err.message,
     data: null,
-  });
+    });
 });
 
 app.listen(port, () => {
-  console.log(`Server berjalan di http://localhost:${port}`);
+    console.log(`Server berjalan di http://localhost:${port}`);
 });

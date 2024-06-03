@@ -9,7 +9,7 @@ async function generateNoDo() {
 }
 //logic database
 const getALl = async () => {
-  const barang_masuk = await prisma.barang_masuk.findMany({
+    return await prisma.barang_masuk.findMany({
     select: {
         id_barang_masuk: true,
         id_barang: true,
@@ -24,10 +24,9 @@ const getALl = async () => {
         }
     },
     orderBy: {
-      createdAt: 'desc'  
+        createdAt: 'desc'  
     },
   });
-  return barang_masuk
 };
 
 const insertData = async (id_barang, tanggal_masuk, kuantitas) => {
@@ -48,28 +47,28 @@ const insertData = async (id_barang, tanggal_masuk, kuantitas) => {
 
 const getById = async (id_barang_masuk) => {
     return prisma.barang_masuk.findUnique({
-      where: {
-        id_barang_masuk
-      },
-      select: {
-        id_barang_masuk: true,
-        id_barang: true,
-        no_do:true,
-        kuantitas: true,
-        tanggal_masuk: true,
-        barang:{
-            select:{
-                nama_barang:true,
-                kategori: true
+        where: {
+            id_barang_masuk
+        },
+        select: {
+            id_barang_masuk: true,
+            id_barang: true,
+            no_do:true,
+            kuantitas: true,
+            tanggal_masuk: true,
+            barang:{
+                select:{
+                    nama_barang:true,
+                    kategori: true
+                }
             }
-        }
-    },
+        },
     });
 };
 
 const update = async (id_barang_masuk,id_barang, tanggal_masuk, kuantitas) => {
     try {
-        const updateBarangMsk = await prisma.barang_masuk.update({
+        return await prisma.barang_masuk.update({
             where: {id_barang_masuk},
             data: {
                 id_barang,
@@ -77,7 +76,6 @@ const update = async (id_barang_masuk,id_barang, tanggal_masuk, kuantitas) => {
                 kuantitas:Number(kuantitas)
             }
         })
-        return updateBarangMsk
     } catch (error) {
         console.log(error);
     }
@@ -85,17 +83,15 @@ const update = async (id_barang_masuk,id_barang, tanggal_masuk, kuantitas) => {
 
 const remove = async (id_barang_masuk) => {
     return await prisma.barang_masuk.delete({
-      where: {
-        id_barang_masuk,
-      },
+        where: {id_barang_masuk},
     });
 };
 
 
 module.exports = {
-  getALl,
-  insertData,
-  getById,
-  update,
-  remove
+    getALl,
+    insertData,
+    getById,
+    update,
+    remove
 };

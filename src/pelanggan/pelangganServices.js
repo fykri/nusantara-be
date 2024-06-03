@@ -1,48 +1,29 @@
 const validator = require('validator')
 
 const {
-  getALl,
-  insertData,
-  getById,
-  update,
-  remove
+    getALl,
+    insertData,
+    getById,
+    update,
+    remove
 } = require("./pelangganRepository");
 
 
 const tampilPelanggan = async () => {
-  try {
-    const pelanggan = await getALl();
-    if (pelanggan.length === 0) {
-      return { status: 404, msg: "Oops, tabel ini masih kosong! Mulailah dengan menambahkan data baru" };
-    }
+    try {
+        const pelanggan = await getALl();
+        if (pelanggan.length === 0) {
+            return { status: 404, msg: "Oops, tabel ini masih kosong! Mulailah dengan menambahkan data baru" };
+        }
     return {
-      status: 200,
-      pelanggan,
-      msg: "pelanggan ada",
+        status: 200,
+        pelanggan,
+        msg: "pelanggan ada",
     };
-  } catch (err) {
-    console.log("terjadi kesalahan", err);
-  }
+    } catch (err) {
+        console.log("terjadi kesalahan", err);
+    }
 };
-
-// const cariPelangganDenganId = async (id_pelanggan) => {
-//   try {
-//     const pelanggan = await findById(id_pelanggan);
-//     if (!pelanggan) {
-//       return {
-//         status: 404,
-//         msg: `pelanggan tidak ditemukan`,
-//       };
-//     }
-//     return {
-//       status: 200,
-//       msg: `pelanggan ${pelanggan.nama_pelanggan} ditemukan`,
-//       pelanggan,
-//     };
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
 
 const tambahPelanggan = async (nama_pelanggan, alamat, email, no_telepon) => { 
     if (!nama_pelanggan || !alamat || !email || !no_telepon) {
@@ -117,23 +98,23 @@ const perbaruiPelanggan = async (id_pelanggan, nama_pelanggan, alamat, email, no
 };
 
 const hapusPelanggan = async (id_pelanggan) => {
-  if (!(await getById(id_pelanggan))) {
+    if (!(await getById(id_pelanggan))) {
+        return {
+            status: 404,
+            msg: "pelanggan tidak ditemukan",
+        };
+    }
+    const pelanggan = await remove(id_pelanggan);
     return {
-      status: 404,
-      msg: "pelanggan tidak ditemukan",
+        status: 200,
+        msg: `pelanggan ${pelanggan.nama_pelanggan} berhasil dihapus`,
     };
-  }
-  const pelanggan = await remove(id_pelanggan);
-  return {
-    status: 200,
-    msg: `pelanggan ${pelanggan.nama_pelanggan} berhasil dihapus`,
-  };
 };
 
 
 module.exports = {
-  tambahPelanggan,
-  tampilPelanggan,
-  perbaruiPelanggan,
-  hapusPelanggan,
+    tambahPelanggan,
+    tampilPelanggan,
+    perbaruiPelanggan,
+    hapusPelanggan,
 };

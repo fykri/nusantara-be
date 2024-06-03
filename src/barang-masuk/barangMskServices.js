@@ -12,9 +12,9 @@ const tampilBarangMasuk = async()=>{
             barangMsk,
             msg: "barang ada",
         };
-      } catch (err) {
+    } catch (err) {
         console.log("terjadi kesalahan", err);
-      }
+    }
 }
 
 const tambahBarangMasuk= async(id_barang, tanggal_masuk, kuantitas)=> {
@@ -53,10 +53,10 @@ const tambahBarangMasuk= async(id_barang, tanggal_masuk, kuantitas)=> {
 
 const perbaruiBarangMasuk = async (id_barang_masuk, id_barang, tanggal_masuk, kuantitas) => {
     if (!(await getById(id_barang_masuk))) {
-      return {
+        return {
         status: 404,
         msg: "barang tidak ditemukan",
-      };
+        };
     }
 
     if(!await findById(id_barang)) {
@@ -67,62 +67,62 @@ const perbaruiBarangMasuk = async (id_barang_masuk, id_barang, tanggal_masuk, ku
     }
 
     if (!id_barang || !tanggal_masuk || !kuantitas) {
-      return {
-        status: 404,
-        msg: "inputan tidak boleh kosong",
-      };
+        return {
+            status: 404,
+            msg: "inputan tidak boleh kosong",
+        };
     }
   
     if (isNaN(kuantitas)) {
-      return {
-        status: 400,
-        msg: "kuantitas harus berupa angka",
-      };
+        return {
+            status: 400,
+            msg: "kuantitas harus berupa angka",
+        };
     }
   
     try {
-      await update(id_barang_masuk,id_barang, tanggal_masuk, kuantitas);
-      const barang = await findById(id_barang)
-      return {
-        status: 200,
-        msg: `barang ${barang.nama_barang} berhasil di update`,
-      };
+        await update(id_barang_masuk,id_barang, tanggal_masuk, kuantitas);
+        const barang = await findById(id_barang)
+        return {
+            status: 200,
+            msg: `barang ${barang.nama_barang} berhasil di update`,
+        };
     } catch (err) {
-      console.log("error update", err.message);
+        console.log("error update", err.message);
     }
 };
 
 const hapusBarangMasuk = async (id_barang_masuk) => {
     const barang_masuk = await getById(id_barang_masuk)
     if (!(await getById(id_barang_masuk))) {
-      return {
-        status: 404,
-        msg: `barang tidak ditemukan`,
-      };
+        return {
+            status: 404,
+            msg: `barang tidak ditemukan`,
+        };
     }
     await remove(id_barang_masuk);
     return {
-      status: 200,
-      msg: `barang ${barang_masuk.barang.nama_barang} berhasil dihapus`,
+        status: 200,
+        msg: `barang ${barang_masuk.barang.nama_barang} berhasil dihapus`,
     };
 };
 
 const cariBarangMasukDenganId = async (id_barang_masuk) => {
     try {
-      const barang = await getById(id_barang_masuk);
-      if (!barang) {
+        const barang = await getById(id_barang_masuk);
+        if (!barang) {
+            return {
+                status: 404,
+                msg: "barang tidak ditemukan",
+            };
+        }
         return {
-          status: 404,
-          msg: "barang tidak ditemukan",
+            status: 200,
+            msg: `barang ditemukan`,
+            barang,
         };
-      }
-      return {
-        status: 200,
-        msg: `barang ditemukan`,
-        barang,
-      };
     } catch (error) {
-      console.log(error.message);
+        console.log(error.message);
     }
 };
 
