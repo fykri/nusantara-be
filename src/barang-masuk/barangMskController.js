@@ -12,9 +12,9 @@ router.get('/', async(req, res)=> {
     try {
         const { status, msg, barangMsk } = await tampilBarangMasuk();
         res.status(status).json({msg, barangMsk});
-      } catch (err) {
+    } catch (err) {
         next(err);
-      }
+    }
 })
 
 router.get('/:id_barang_masuk', async(req,res,next)=> {
@@ -39,17 +39,17 @@ router.post('/insert', async(req, res, next)=> {
 
 router.patch("/update/:id_barang_masuk", async (req, res, next) => {
     try {
-      const { id_barang_masuk } = req.params;
-      const { id_barang, tanggal_masuk, kuantitas } = req.body;
-      const { status, msg } = await perbaruiBarangMasuk(
-        id_barang_masuk,
-        id_barang,
-        tanggal_masuk,
-        kuantitas
-      );
-      res.status(status).json(msg);
+        const { id_barang_masuk } = req.params;
+        const { id_barang, tanggal_masuk, kuantitas } = req.body;
+        const { status, msg } = await perbaruiBarangMasuk(
+            id_barang_masuk,
+            id_barang,
+            tanggal_masuk,
+            kuantitas
+        );
+        res.status(status).json(msg);
     } catch (error) {
-      next(error);
+        next(error);
     }
 });
 
