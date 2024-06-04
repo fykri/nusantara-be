@@ -22,6 +22,12 @@ app.use(express.urlencoded({ extended: true }));
 
 const { verifyToken } = require("./user-auth/middleware/authmiddleware");
 
+// Swagger 
+const swaggerUi = require('swagger-ui-express');
+const apiDoc = require('./apidocs.json')
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDoc))
+// End Swagger
+
 
 app.get("/user", verifyToken, (req, res) => {
     res.send("ini halaman user");

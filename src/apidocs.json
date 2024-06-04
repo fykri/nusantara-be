@@ -1,0 +1,586 @@
+{
+    "openapi" : "3.0.0",
+    "info": {
+        "title": "API Warehouse Ban",
+        "description": "API ini mengelola operasi dan pembatasan sistem gudang, termasuk fungsi untuk melarang dan mengizinkan kembali item atau pengguna tertentu dari gudang.",
+        "version": "0.1.9"
+    },
+    "servers" : [
+        {
+            "url": "http://localhost:2000", 
+            "description": "localhost"
+        }
+    ], 
+    "tags": [
+        {
+            "name": "User Auth",
+            "description": "Login, Register, Logout"
+        },
+        {
+            "name": "Barang",
+            "description": "CRUD"
+        },
+        {
+            "name": "Barang Masuk",
+            "description": "CRUD"
+        },
+        {
+            "name": "Pelanggan",
+            "description": "CRUD"
+        }
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": [
+                    "User Auth"
+                ],
+                "summary": "Registrasi",
+                "description": "Melakukan Registrasi",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "confirmPassword": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "409": {
+                        "description": "conflict"
+                    }
+                }
+            }
+        },
+
+        "/login": {
+            "post": {
+                "tags": [
+                    "User Auth"
+                ],
+                "summary": "Login",
+                "description": "Melakukan Login",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "headers": {
+                        "Set-Cookie": {
+                            "description": "Cookie yang diset setelah login sukses",
+                            "schema": {
+                                "type": "string"
+                            }
+                            }   
+                    }
+                }
+            }
+        },
+
+        "/token": {
+            "get": {
+                "tags": [
+                    "User Auth"
+                ],
+                "summary": "Get Token",
+                "description": "Mengambil Token ketika selesai login",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+
+        "/logout": {
+            "delete": {
+                "tags": [
+                    "User Auth"
+                ],
+                "summary": "Logout",
+                "description": "Melakukan Logout",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized Error"
+                    }
+                }
+            }
+        },
+
+        "/barang": {
+            "get": {
+                "tags": [
+                    "Barang"
+                ],
+                "summary": "Get All Barang",
+                "description": "Mendapatkan Seluruh Data Barang",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    }
+                }
+            }
+        },
+        "/barang/insert": {
+            "post": {
+                "tags": [
+                    "Barang"
+                ],
+                "summary": "Post Barang",
+                "description": "Menambahkan Data Barang",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nama_barang": {
+                                        "type": "string"
+                                    },
+                                    "kategori": {
+                                        "type": "string"
+                                    },
+                                    "harga": {
+                                        "type": "integer"
+                                    },
+                                    "stok": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+
+                    "404": {
+                        "description": "not found"
+                    },
+                    "409": {
+                        "description": "coflig"
+                    }
+
+                }
+            }
+        },
+        "/barang/update/{id_barang}": {
+            "patch": {
+                "tags": [
+                    "Barang"
+                ],
+                "summary": "Update Barang",
+                "description": "Memperbarui Barang Berdasarkan ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_barang",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Barang"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nama_barang": {
+                                        "type": "string"
+                                    },
+                                    "kategori": {
+                                        "type": "string"
+                                    },
+                                    "harga": {
+                                        "type": "integer"
+                                    },
+                                    "stok": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+
+                    "404": {
+                        "description": "not found"
+                    },
+                    "409": {
+                        "description": "conflict"
+                    }
+                }
+            }
+        },
+        "/barang/delete/{id_barang}": {
+            "delete": {
+                "tags": [
+                    "Barang"
+                ],
+                "summary": "Delete Barang",
+                "description": "Menghapus Data Barang",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_barang",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Barang"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/barang-masuk": {
+            "get": {
+                "tags": [
+                    "Barang Masuk"
+                ],
+                "summary": "Get All Barang",
+                "description": "Mendapatkan Seluruh Data Barang Masuk",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/barang-masuk/insert": {
+            "post": {
+                "tags": [
+                    "Barang Masuk"
+                ],
+                "summary": "Post Barang Masuk",
+                "description": "Menambahkan Data Barang Masuk",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id_barang": {
+                                        "type": "string"
+                                    },
+                                    "tanggal_masuk": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "kuantitas": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/barang-masuk/update/{id_barang_masuk}": {
+            "patch": {
+                "tags": [
+                    "Barang Masuk"
+                ],
+                "summary": "Update Barang",
+                "description": "Memperbarui Barang Masuk Berdasarkan Id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_barang_masuk",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Barang Masuk"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id_barang": {
+                                        "type": "string"
+                                    },
+                                    "tanggal_masuk": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "kuantitas": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/barang-masuk/delete/{id_barang_masuk}": {
+            "delete": {
+                "tags": [
+                    "Barang Masuk"
+                ],
+                "summary": "Delete Barang Masuk",
+                "description": "Menghapus Data Barang",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_barang_masuk",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Barang Masuk"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/pelanggan": {
+            "get": {
+                "tags": [
+                    "Pelanggan"
+                ],
+                "summary": "Get All Pelanngan",
+                "description": "Mendapatkan Seluruh Data Pelanggan",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/pelanggan/insert": {
+            "post": {
+                "tags": [
+                    "Pelanggan"
+                ],
+                "summary": "Post Pelanggan",
+                "description": "Menambahkan Data Pelanggan",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nama_pelanggan": {
+                                        "type": "string"
+                                    },
+                                    "alamat": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "no_telepon": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/pelanggan/update/{id_pelanggan}": {
+            "put": {
+                "tags": [
+                    "Pelanggan"
+                ],
+                "summary": "Update Pelanggan",
+                "description": "Memperbarui Pelanggan Berdasarkan Id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_pelanggan",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Pelanggan"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nama_pelanggan": {
+                                        "type": "string"
+                                    },
+                                    "alamat": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "no_telepon": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/pelanggan/delete/{id_pelanggan}": {
+            "delete": {
+                "tags": [
+                    "Pelanggan"
+                ],
+                "summary": "Delete Pelanggan",
+                "description": "Menghapus Pelanggan",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_pelanggan",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Pelanggan"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        }
+    }
+}

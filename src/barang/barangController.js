@@ -4,20 +4,8 @@ const {
     tambahBarang,
     tampilBarang,
     perbaruiBarang,
-    cariBarangDenganId,
     hapusBarang,
 } = require("./barangServices");
-
-
-router.get('/:id_barang', async(req,res,next)=> {
-    try {
-        const {id_barang} = req.params
-        const {status, msg, barang} = await cariBarangDenganId(id_barang)
-        res.status(status).json({msg, barang})
-    } catch (error) {
-        next(error)
-    }
-})
 
 
 router.get("/", async (req, res, next) => {
