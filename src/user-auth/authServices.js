@@ -1,6 +1,7 @@
 const { insertData, findEmail, updateToken, findToken } = require("./authRepository");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const validator = require('validator')
 const { promisify } = require('util');
 const verifyToken = promisify(jwt.verify);
 
@@ -19,6 +20,12 @@ module.exports = {
                 status: 409,
                 msg: "Email Sudah Terdaftar",
             };
+        }
+        if(!validator.isEmail(username)) {
+            return {
+                status: 400,
+                msg: 'Email tidak valid'
+            }
         }
         if (password != confirmPassword) {
             return {
@@ -94,7 +101,7 @@ module.exports = {
         try {
             const user = await findToken(token);
             if (!user) {
-                return { status: 403, msg: 'token tidak ada di database' };
+                return { status: 403, msg: 'forbidden' };
             }
 
             await verifyToken(token, process.env.REFRESH_TOKEN_SECRET);
@@ -106,7 +113,8 @@ module.exports = {
 
             return {
                 status: 200,
-                msg: accessToken,
+                msg: 'token berhasil didapatkan',
+                token: accessToken
             };
         } catch (err) {
             console.log('error', err.message);
@@ -114,16 +122,17 @@ module.exports = {
     },
 
     logout: async (token)=>{
-        if(!token) return {status: 204}
+        if(!token) return {status: 401, msg: 'logout gagal'}
         const refreshToken = await findToken(token)
-        if(!refreshToken) return{status:204}
+        if(!refreshToken) return{status:400, msg: 'logout gagal'}
 
         const {idUser} = refreshToken
         const deleteToken = null
         await updateToken(deleteToken ,idUser)
         return {
             nameCookie:'refreshToken',
-            status:200
+            status:200,
+            msg: 'logout berhasil'
         }
     }
 }

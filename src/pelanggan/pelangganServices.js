@@ -59,10 +59,10 @@ const tambahPelanggan = async (nama_pelanggan, alamat, email, no_telepon) => {
 };
 
 const perbaruiPelanggan = async (id_pelanggan, nama_pelanggan, alamat, email, no_telepon) => {
-    if (!(await getById(id_pelanggan))) {
+    if (!await getById(id_pelanggan)) {
         return {
             status: 404,
-            msg: `pelanggan ${nama_pelanggan} tidak ditemukan`,
+            msg: `pelanggan tidak ditemukan`,
         };
     }
     if (!id_pelanggan || !nama_pelanggan || !alamat || !email || !no_telepon) {
@@ -87,10 +87,11 @@ const perbaruiPelanggan = async (id_pelanggan, nama_pelanggan, alamat, email, no
     }
 
     try {
+        const pelanggan = await getById(id_pelanggan)
         await update(id_pelanggan, nama_pelanggan, alamat, email, no_telepon);
         return {
             status: 200,
-            msg: `pelanggan ${nama_pelanggan} berhasil di update`,
+            msg: `pelanggan ${pelanggan.nama_pelanggan} berhasil di update menajadi ${nama_pelanggan}`,
         };
     } catch (err) {
         console.log("error update", err.message);

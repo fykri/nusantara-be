@@ -23,25 +23,6 @@ const tampilBarang = async () => {
     }
 };
 
-const cariBarangDenganId = async (id_barang) => {
-    try {
-        const barang = await findById(id_barang);
-        if (!barang) {
-            return {
-                status: 404,
-                msg: `barang tidak ditemukan`,
-            };
-        }
-        return {
-            status: 200,
-            msg: `barang ${barang.nama_barang} ditemukan`,
-            barang,
-        };
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-
 const tambahBarang = async (nama_barang, kategori, harga, stok) => { 
     if (!nama_barang || !kategori || !harga || !stok) {
         return {
@@ -50,18 +31,25 @@ const tambahBarang = async (nama_barang, kategori, harga, stok) => {
         };
     }
 
-    if(await findByname(nama_barang)) {
-        return {
-            status:409,
-            msg: `Konflik: Nama barang ${nama_barang} sudah terdaftar dalam tabel`
-        }
-    }
-
     if (isNaN(harga)) {
         return {
             status: 400,
             msg: "harga_per_satuan harus berupa angka",
         };
+    }
+
+    if (isNaN(stok)) {
+        return {
+            status: 400,
+            msg: "stok harus berupa angka",
+        }
+    }
+
+    if(await findByname(nama_barang)) {
+        return {
+            status:409,
+            msg: `Konflik: Nama barang ${nama_barang} sudah terdaftar dalam tabel`
+        }
     }
 
     try {
@@ -88,26 +76,36 @@ const perbaruiBarang = async (id_barang, nama_barang, kategori, harga, stok) => 
             msg: "Sumber daya tidak ditemukan: Semua input harus diisi",
         };
     }
-    const barang = await findById(id_barang)
-    if(barang.nama_barang !== nama_barang) {
-        return {
-            status:409,
-            msg: `Konflik: Nama barang ${nama_barang} sudah terdaftar dalam tabel`
-        }
-    }
 
-    if (isNaN(harga) || isNaN(stok)) {
+    if (isNaN(harga)) {
         return {
             status: 400,
-            msg: "harga atau stok harus berupa angka",
+            msg: "harga_per_satuan harus berupa angka",
         };
     }
+
+    if (isNaN(stok)) {
+        return {
+            status: 400,
+            msg: "stok harus berupa angka",
+        }
+    }
+    const barangId = await findById(id_barang)
+    const barangName = await findByname(nama_barang)
+        if(barangName) {
+            if(barangId.nama_barang !==  barangName.nama_barang) {
+                return {
+                    status: 409,
+                    msg: `Konflik: Nama barang ${nama_barang} sudah terdaftar dalam tabel`
+                }
+            }
+        }
 
     try {
         await update(id_barang, nama_barang, kategori, harga, stok);
         return {
             status: 200,
-            msg: `barang ${nama_barang} berhasil di update`,
+            msg: `barang berhasil di update`,
         };
     } catch (err) {
         console.log("error update", err.message);
@@ -128,11 +126,9 @@ const hapusBarang = async (id_barang) => {
     };
 };
 
-
 module.exports = {
     tambahBarang,
     tampilBarang,
     perbaruiBarang,
-    cariBarangDenganId,
     hapusBarang,
 };

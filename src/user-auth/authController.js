@@ -32,7 +32,6 @@ router.post("/login", async (req, res) => {
         });
         res.status(status).json({
             accesToken,
-            refreshToken,
             msg
         });
     } catch (error) {
@@ -43,8 +42,8 @@ router.post("/login", async (req, res) => {
 router.get("/token", async (req, res) => {
     const getToken = req.cookies.refreshToken;
     try{
-        const {status, msg} = await refreshToken(getToken);
-        res.status(status).json({msg});
+        const {status, msg, token} = await refreshToken(getToken);
+        res.status(status).json({msg, token});
     }catch(err){
         console.log('err', err);
     }
@@ -55,7 +54,7 @@ router.delete('/logout', async(req,res)=>{
     try{
         const user = await logout(token)
         res.clearCookie(user.nameCookie) 
-        return res.sendStatus(user.status)
+        return res.status(user.status).json({msg: user.msg})
     } catch(err){
         console.log('errorLogout', err);
     }

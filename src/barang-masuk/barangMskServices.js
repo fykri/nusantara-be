@@ -27,14 +27,14 @@ const tambahBarangMasuk= async(id_barang, tanggal_masuk, kuantitas)=> {
     if (!id_barang || !tanggal_masuk || !kuantitas) {
         return {
             status: 404,
-            msg: "tambah barang masuk gagal",
+            msg: "Sumber daya tidak ditemukan: Semua input harus diisi",
         };
     }
 
     if (isNaN(kuantitas)) {
         return {
              status: 400,
-             msg: "kuantitas tidak boleh berbentuk karakter",
+             msg: "kuantitas harus berupa angka",
         };
     }
     try {
