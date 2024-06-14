@@ -45,7 +45,7 @@ const insertData = async (id_barang, tanggal_masuk, kuantitas) => {
     return barang_masuk
 };
 
-const getById = async (id_barang_masuk) => {
+const findByIdBarangMasuk = async (id_barang_masuk) => {
     return prisma.barang_masuk.findUnique({
         where: {
             id_barang_masuk
@@ -91,7 +91,7 @@ const remove = async (id_barang_masuk) => {
 module.exports = {
     getALl,
     insertData,
-    getById,
+    findByIdBarangMasuk,
     update,
     remove
 };

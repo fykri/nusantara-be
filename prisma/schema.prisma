@@ -17,16 +17,17 @@ model User {
 }
 
 model Barang {
-    id_barang   String         @id
-    nama_barang String
-    kategori    String
-    satuan      String         @default("qty")
-    harga       Int
-    stok        Int
-    total_harga Int
-    createdAt   DateTime       @default(now())
-    updatedAt   DateTime       @updatedAt
-    barangMasuk Barang_masuk[]
+    id_barang     String          @id
+    nama_barang   String
+    kategori      String
+    satuan        String          @default("qty")
+    harga         Int
+    stok          Int             @default(0)
+    total_harga   Int
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @updatedAt
+    barangMasuk   Barang_masuk[]
+    Barang_keluar Barang_keluar[]
 }
 
 model Barang_masuk {
@@ -41,9 +42,23 @@ model Barang_masuk {
 }
 
 model Pelanggan {
-    id_pelanggan   String @id
+    id_pelanggan   String          @id
     nama_pelanggan String
     alamat         String
     email          String
     no_telpon      String
+    Barang_keluar  Barang_keluar[]
+}
+
+model Barang_keluar {
+    id_barang_keluar String    @id
+    id_barang        String
+    id_pelanggan     String
+    kuantitas        Int
+    tanggal_keluar   DateTime
+    total_harga      Int
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+    barang           Barang    @relation(fields: [id_barang], references: [id_barang], onUpdate: Cascade, onDelete: Cascade)
+    pelanggan        Pelanggan @relation(fields: [id_pelanggan], references: [id_pelanggan], onDelete: Cascade, onUpdate: Cascade)
 }

@@ -1,17 +1,19 @@
 const prisma = require("../../prisma/prismaClient");
 
-const insertData = async (nama_barang, kategori, harga, stok) => {
+const insertData = async (nama_barang, kategori, harga) => {
     const randomNo = Math.floor(Math.random() * 99999999).toString().padStart(8, '0');
     const id_barang = `BRG-${randomNo}`;
+    const stok = 0
+    const hargaInt = parseInt(harga)
     try {
         return await prisma.barang.create({
             data: {
                 id_barang,
                 nama_barang,
                 kategori,
-                harga: parseInt(harga),
-                stok: parseInt(stok),
-                total_harga: parseInt(harga * stok)
+                harga: hargaInt,
+                stok: stok,
+                total_harga: 0
             },
         });
     } catch (err) {
@@ -37,19 +39,18 @@ const getALl = async () => {
     }
 };
 
-const update = async (id_barang, nama_barang, kategori, harga, stok) => {
+const update = async (id_barang, nama_barang, kategori, harga) => {
     return await prisma.barang.update({
         where: { id_barang },
         data: {
             nama_barang,
             kategori,
             harga: parseInt(harga),
-            stok: parseInt(stok)
         },
     });
 };
 
-const findById = async (id_barang) => {
+const findByIdBarang = async (id_barang) => {
     return prisma.barang.findUnique({
         where: { id_barang,},
     });
@@ -67,7 +68,7 @@ module.exports = {
   insertData,
   getALl,
   update,
-  findById,
+  findByIdBarang,
   remove,
   findByname
 };

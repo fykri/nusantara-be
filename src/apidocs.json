@@ -191,9 +191,6 @@
                                     },
                                     "harga": {
                                         "type": "integer"
-                                    },
-                                    "stok": {
-                                        "type": "integer"
                                     }
                                 }
                             }
@@ -212,7 +209,7 @@
                         "description": "not found"
                     },
                     "409": {
-                        "description": "coflig"
+                        "description": "conflict"
                     }
 
                 }
@@ -248,9 +245,6 @@
                                         "type": "string"
                                     },
                                     "harga": {
-                                        "type": "integer"
-                                    },
-                                    "stok": {
                                         "type": "integer"
                                     }
                                 }
