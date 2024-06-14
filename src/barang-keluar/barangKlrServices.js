@@ -1,6 +1,8 @@
-const {getAll, findByIdBarangKeluar, insertData, update} = require('./barangKlrRepository')
+const {getAll, findByIdBarangKeluar, insertData, update, getByfirstIdBarang, remove} = require('./barangKlrRepository')
 const {findByIdBarang} = require('../barang/barangRepository')
 const {findByIdPelanggan} = require('../pelanggan/pelangganRepository')
+
+
 const tampilBarangKeluar = async()=>{
     try {
         const barangKlr = await getAll();
@@ -16,7 +18,6 @@ const tampilBarangKeluar = async()=>{
         console.log("terjadi kesalahan", err);
     }
 }
-
 
 const tambahBarangKeluar= async(id_barang, id_pelanggan, kuantitas, tanggal_keluar)=> {
     if(!await findByIdBarang(id_barang)) {
@@ -50,7 +51,7 @@ const tambahBarangKeluar= async(id_barang, id_pelanggan, kuantitas, tanggal_kelu
     if(parseInt(kuantitas) > barang.stok) {
         return {
             status: 400,
-            msg: "Warning: tidak bisa mengeluarkan barang dikarenakan stok yang ada dibarang lebih kecil dari jumlah yang dikeluarkan"
+            msg: "Warning: tidak bisa mengeluarkan barang dikarenakan stok yang ada dibarang lebih kecil dari jumlah yang diupdate"
         }
     }
     
@@ -69,8 +70,8 @@ const tambahBarangKeluar= async(id_barang, id_pelanggan, kuantitas, tanggal_kelu
 const updateBarangKeluar = async(id_barang_keluar ,id_barang, id_pelanggan, kuantitas, tanggal_keluar)=> {
     if (!(await findByIdBarangKeluar(id_barang_keluar))) {
         return {
-        status: 404,
-        msg: "barang tidak ditemukan",
+            status: 404,
+            msg: "barang Keluar tidak ditemukan",
         };
     }
 
@@ -103,20 +104,42 @@ const updateBarangKeluar = async(id_barang_keluar ,id_barang, id_pelanggan, kuan
     }
 
     try {
-        await update(id_barang_keluar, id_barang, id_pelanggan, kuantitas, tanggal_keluar);
         const barang = await findByIdBarang(id_barang)
+        const barang_keluar = await getByfirstIdBarang(id_barang)
+        const stokBarang = barang.stok + barang_keluar.kuantitas
+        if(parseInt(kuantitas) > stokBarang) {
+            return {
+                status: 400,
+                msg: "Warning: tidak dapat update barang dikarenakan stok yang ada dibarang lebih kecil dari jumlah yang dikeluarkan"
+            }
+        }
+        await update(id_barang_keluar, id_barang, id_pelanggan, kuantitas, tanggal_keluar);
         return {
             status: 200,
-            msg: `barang ${barang.nama_barang} berhasil di update`,
+            msg: `barang berhasil di update`,
         };
     } catch (err) {
         console.log("error update", err.message);
     }
 }
 
+const hapusBarangKeluar = async(id_barang_keluar)=> {
+    if (!(await findByIdBarangKeluar(id_barang_keluar))) {
+        return {
+            status: 404,
+            msg: `barang tidak ditemukan`,
+        };
+    }
+    await remove(id_barang_keluar);
+    return {
+        status: 200,
+        msg: `barang berhasil dihapus`,
+    };
+}
 
 module.exports = {
     tampilBarangKeluar,
     tambahBarangKeluar,
-    updateBarangKeluar
+    updateBarangKeluar,
+    hapusBarangKeluar
 }

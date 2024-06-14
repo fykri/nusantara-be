@@ -45,10 +45,23 @@ const update = async(id_barang_keluar, id_barang, id_pelanggan ,kuantitas, tangg
     })
 }
 
+const getByfirstIdBarang = async(id_barang)=> {
+    return await prisma.barang_keluar.findFirst({
+        where:{id_barang}
+    })
+}
+
+const remove = async(id_barang_keluar) => {
+    return await prisma.barang_keluar.delete({
+        where:{id_barang_keluar}
+    })
+}
 
 module.exports = {
     getAll,
     insertData,
     findByIdBarangKeluar,
-    update
+    update,
+    getByfirstIdBarang,
+    remove
 }
