@@ -38,10 +38,12 @@ const user = require("./user-auth/authController");
 const barang= require("./barang/barangController")
 const pelanggan= require("./pelanggan/pelangganController")
 const barang_masuk = require('./barang-masuk/barangMskController')
+const barang_keluar = require('./barang-keluar/barangKlrControlller')
 app.use("/", user);
 app.use('/barang', barang)
 app.use('/barang-masuk', barang_masuk)
 app.use('/pelanggan', pelanggan)
+app.use('/barang-keluar', barang_keluar)
 
 app.use((_req, res) => {
     return res.status(404).json({

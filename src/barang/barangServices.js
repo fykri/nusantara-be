@@ -2,7 +2,7 @@ const {
     insertData,
     getALl,
     update,
-    findById,
+    findByIdBarang,
     remove,
     findByname
 } = require("./barangRepository");
@@ -23,8 +23,8 @@ const tampilBarang = async () => {
     }
 };
 
-const tambahBarang = async (nama_barang, kategori, harga, stok) => { 
-    if (!nama_barang || !kategori || !harga || !stok) {
+const tambahBarang = async (nama_barang, kategori, harga) => { 
+    if (!nama_barang || !kategori || !harga) {
         return {
             status: 404,
             msg: "Sumber daya tidak ditemukan: Semua input harus diisi",
@@ -36,13 +36,6 @@ const tambahBarang = async (nama_barang, kategori, harga, stok) => {
             status: 400,
             msg: "harga_per_satuan harus berupa angka",
         };
-    }
-
-    if (isNaN(stok)) {
-        return {
-            status: 400,
-            msg: "stok harus berupa angka",
-        }
     }
 
     if(await findByname(nama_barang)) {
@@ -53,7 +46,7 @@ const tambahBarang = async (nama_barang, kategori, harga, stok) => {
     }
 
     try {
-        await insertData(nama_barang, kategori,harga, stok);
+        await insertData(nama_barang, kategori,harga);
         return {
             status: 200,
             msg: `barang dengan nama ${nama_barang} berhasil ditambahkan`,
@@ -63,14 +56,14 @@ const tambahBarang = async (nama_barang, kategori, harga, stok) => {
     }
 };
 
-const perbaruiBarang = async (id_barang, nama_barang, kategori, harga, stok) => {
-    if (!(await findById(id_barang))) {
+const perbaruiBarang = async (id_barang, nama_barang, kategori, harga) => {
+    if (!(await findByIdBarang(id_barang))) {
         return {
             status: 404,
             msg: `barang ${nama_barang} tidak ditemukan`,
         };
     }
-    if (!id_barang || !nama_barang || !kategori || !harga || !stok) {
+    if (!id_barang || !nama_barang || !kategori || !harga) {
         return {
             status: 404,
             msg: "Sumber daya tidak ditemukan: Semua input harus diisi",
@@ -84,13 +77,7 @@ const perbaruiBarang = async (id_barang, nama_barang, kategori, harga, stok) => 
         };
     }
 
-    if (isNaN(stok)) {
-        return {
-            status: 400,
-            msg: "stok harus berupa angka",
-        }
-    }
-    const barangId = await findById(id_barang)
+    const barangId = await findByIdBarang(id_barang)
     const barangName = await findByname(nama_barang)
         if(barangName) {
             if(barangId.nama_barang !==  barangName.nama_barang) {
@@ -102,7 +89,7 @@ const perbaruiBarang = async (id_barang, nama_barang, kategori, harga, stok) => 
         }
 
     try {
-        await update(id_barang, nama_barang, kategori, harga, stok);
+        await update(id_barang, nama_barang, kategori, harga);
         return {
             status: 200,
             msg: `barang berhasil di update`,
@@ -113,7 +100,7 @@ const perbaruiBarang = async (id_barang, nama_barang, kategori, harga, stok) => 
 };
 
 const hapusBarang = async (id_barang) => {
-    if (!(await findById(id_barang))) {
+    if (!(await findByIdBarang(id_barang))) {
         return {
             status: 404,
             msg: "barang tidak ditemukan",

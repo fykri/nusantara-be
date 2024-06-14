@@ -18,9 +18,9 @@ router.get("/", async (req, res, next) => {
 });
 
 router.post("/insert", async (req, res, next) => {
-    const { nama_barang, kategori, harga, stok } = req.body;
+    const { nama_barang, kategori, harga } = req.body;
     try {
-        const { status, msg } = await tambahBarang(nama_barang, kategori, harga, stok);
+        const { status, msg } = await tambahBarang(nama_barang, kategori, harga);
         res.status(status).json(msg);
     } catch (err) {
         next(err);
@@ -30,13 +30,12 @@ router.post("/insert", async (req, res, next) => {
 router.patch("/update/:id_barang", async (req, res, next) => {
     try {
         const { id_barang } = req.params;
-        const { nama_barang, kategori, harga, stok } = req.body;
+        const { nama_barang, kategori, harga } = req.body;
         const { status, msg } = await perbaruiBarang(
             id_barang,
             nama_barang,
             kategori,
             harga,
-            stok
         );
         res.status(status).json(msg);
     } catch (error) {

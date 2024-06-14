@@ -3,8 +3,7 @@ const {
     tambahBarangMasuk, 
     tampilBarangMasuk, 
     perbaruiBarangMasuk, 
-    hapusBarangMasuk, 
-    cariBarangMasukDenganId
+    hapusBarangMasuk
 } = require('./barangMskServices')
 
 
@@ -14,16 +13,6 @@ router.get('/', async(req, res)=> {
         res.status(status).json({msg, barangMsk});
     } catch (err) {
         next(err);
-    }
-})
-
-router.get('/:id_barang_masuk', async(req,res,next)=> {
-    try {
-        const {id_barang_masuk} = req.params
-        const {status, msg, barang} = await cariBarangMasukDenganId(id_barang_masuk)
-        res.status(status).json({msg, barang})
-    } catch (error) {
-        next(error)
     }
 })
 

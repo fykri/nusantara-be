@@ -1,5 +1,5 @@
-const {getALl, insertData, getById, update, remove} = require('./barangMskRepository')
-const {findById} = require('../barang/barangRepository')
+const {getALl, insertData, findByIdBarangMasuk, update, remove} = require('./barangMskRepository')
+const {findByIdBarang} = require('../barang/barangRepository')
 
 const tampilBarangMasuk = async()=>{
     try {
@@ -18,7 +18,7 @@ const tampilBarangMasuk = async()=>{
 }
 
 const tambahBarangMasuk= async(id_barang, tanggal_masuk, kuantitas)=> {
-    if(!await findById(id_barang)) {
+    if(!await findByIdBarang(id_barang)) {
         return {
             status: 404,
             msg: 'id Barang Wrong'
@@ -39,7 +39,7 @@ const tambahBarangMasuk= async(id_barang, tanggal_masuk, kuantitas)=> {
     }
     try {
         await insertData(id_barang, tanggal_masuk, kuantitas)
-        const barang = await findById(id_barang)
+        const barang = await findByIdBarang(id_barang)
         return {
             status:200,
             msg: `barang ${barang.nama_barang} berhasil masuk`
@@ -52,14 +52,14 @@ const tambahBarangMasuk= async(id_barang, tanggal_masuk, kuantitas)=> {
 }
 
 const perbaruiBarangMasuk = async (id_barang_masuk, id_barang, tanggal_masuk, kuantitas) => {
-    if (!(await getById(id_barang_masuk))) {
+    if (!(await findByIdBarangMasuk(id_barang_masuk))) {
         return {
         status: 404,
         msg: "barang tidak ditemukan",
         };
     }
 
-    if(!await findById(id_barang)) {
+    if(!await findByIdBarang(id_barang)) {
         return {
             status: 404,
             msg: `id ${id_barang} Wrong`
@@ -82,7 +82,7 @@ const perbaruiBarangMasuk = async (id_barang_masuk, id_barang, tanggal_masuk, ku
   
     try {
         await update(id_barang_masuk,id_barang, tanggal_masuk, kuantitas);
-        const barang = await findById(id_barang)
+        const barang = await findByIdBarang(id_barang)
         return {
             status: 200,
             msg: `barang ${barang.nama_barang} berhasil di update`,
@@ -93,8 +93,8 @@ const perbaruiBarangMasuk = async (id_barang_masuk, id_barang, tanggal_masuk, ku
 };
 
 const hapusBarangMasuk = async (id_barang_masuk) => {
-    const barang_masuk = await getById(id_barang_masuk)
-    if (!(await getById(id_barang_masuk))) {
+    const barang_masuk = await findByIdBarangMasuk(id_barang_masuk)
+    if (!(await findByIdBarangMasuk(id_barang_masuk))) {
         return {
             status: 404,
             msg: `barang tidak ditemukan`,
@@ -107,29 +107,9 @@ const hapusBarangMasuk = async (id_barang_masuk) => {
     };
 };
 
-const cariBarangMasukDenganId = async (id_barang_masuk) => {
-    try {
-        const barang = await getById(id_barang_masuk);
-        if (!barang) {
-            return {
-                status: 404,
-                msg: "barang tidak ditemukan",
-            };
-        }
-        return {
-            status: 200,
-            msg: `barang ditemukan`,
-            barang,
-        };
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-
 module.exports = {
     tambahBarangMasuk,
     tampilBarangMasuk,
     perbaruiBarangMasuk,
-    hapusBarangMasuk,
-    cariBarangMasukDenganId,
+    hapusBarangMasuk
 }

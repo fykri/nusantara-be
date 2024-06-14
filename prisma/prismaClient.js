@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client')
-const { updateTotalHargaMiddleware, updateStokMiddleware } = require('./middleware')
+const { updateStokMiddleware, updateTotalHargaMiddleware} = require('./middleware')
 
 const prisma = new PrismaClient()
 

@@ -17,7 +17,7 @@ const insertData = async(nama_pelanggan, alamat, email, no_telpon)=> {
     })
 }
 
-const getById = async(id_pelanggan) => {
+const findByIdPelanggan = async(id_pelanggan) => {
     return await prisma.pelanggan.findUnique({
         where: {id_pelanggan}
     })
@@ -45,7 +45,7 @@ const remove = async(id_pelanggan) => {
 module.exports = {
     getALl,
     insertData,
-    getById,
+    findByIdPelanggan,
     update,
     remove
 };

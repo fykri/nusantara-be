@@ -3,7 +3,7 @@ const validator = require('validator')
 const {
     getALl,
     insertData,
-    getById,
+    findByIdPelanggan,
     update,
     remove
 } = require("./pelangganRepository");
@@ -59,7 +59,7 @@ const tambahPelanggan = async (nama_pelanggan, alamat, email, no_telepon) => {
 };
 
 const perbaruiPelanggan = async (id_pelanggan, nama_pelanggan, alamat, email, no_telepon) => {
-    if (!await getById(id_pelanggan)) {
+    if (!await findByIdPelanggan(id_pelanggan)) {
         return {
             status: 404,
             msg: `pelanggan tidak ditemukan`,
@@ -99,7 +99,7 @@ const perbaruiPelanggan = async (id_pelanggan, nama_pelanggan, alamat, email, no
 };
 
 const hapusPelanggan = async (id_pelanggan) => {
-    if (!(await getById(id_pelanggan))) {
+    if (!(await findByIdPelanggan(id_pelanggan))) {
         return {
             status: 404,
             msg: "pelanggan tidak ditemukan",
