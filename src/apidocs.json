@@ -27,6 +27,10 @@
         {
             "name": "Pelanggan",
             "description": "CRUD"
+        },
+        {
+            "name": "Barang Keluar",
+            "description": "CRUD"
         }
     ],
     "paths": {
@@ -296,6 +300,7 @@
                 }
             }
         },
+
         "/barang-masuk": {
             "get": {
                 "tags": [
@@ -434,6 +439,7 @@
                 }
             }
         },
+
         "/pelanggan": {
             "get": {
                 "tags": [
@@ -564,6 +570,150 @@
                             "type": "string"
                         },
                         "description": "Masukkan Id Pelanggan"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+
+        "/barang-keluar": {
+            "get": {
+                "tags": [
+                    "Barang Keluar"
+                ],
+                "summary": "Get All Barang Keluar",
+                "description": "Mendapatkan Seluruh Data Barang Keluar",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/barang-keluar/insert": {
+            "post": {
+                "tags": [
+                    "Barang Keluar"
+                ],
+                "summary": "Post Barang Keluar",
+                "description": "Menambahkan Data Barang Keluar",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id_barang": {
+                                        "type": "string"
+                                    },
+                                    "id_pelanggan": {
+                                        "type": "string"
+                                    },
+                                    "kuantitas": {
+                                        "type": "integer"
+                                    },
+                                    "tanggal_keluar": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/barang-keluar/update/{id_barang_keluar}": {
+            "put": {
+                "tags": [
+                    "Barang Keluar"
+                ],
+                "summary": "Update Barang Keluar",
+                "description": "Memperbarui Barang Keluar Berdasarkan Id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_barang_keluar",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Barang Keluar"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id_barang": {
+                                        "type": "string"
+                                    },
+                                    "id_pelanggan": {
+                                        "type": "string"
+                                    },
+                                    "kuantitas": {
+                                        "type": "integer"
+                                    },
+                                    "tanggal_keluar": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/barang-keluar/delete/{id_barang_keluar}": {
+            "delete": {
+                "tags": [
+                    "Barang Keluar"
+                ],
+                "summary": "Delete Barang Keluar",
+                "description": "Menghapus Barang Keluar",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_barang_keluar",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id barang keluar"
                     }
                 ],
                 "responses": {

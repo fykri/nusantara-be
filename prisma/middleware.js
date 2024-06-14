@@ -20,26 +20,26 @@ const updateStokMiddleware = async (params, next) => {
                         }
                     })
                 }
-            } else if(action === 'delete') {
-                const { where } = args;
-                const { id_barang_masuk } = where;
-                const barangMasuk = await prisma.barang_masuk.findUnique({
-                    where: { id_barang_masuk },
-                    select: { id_barang: true, kuantitas: true },
-                });
-                if (barangMasuk) {
-                    const barang = await prisma.barang.findUnique({
-                        where: { id_barang: barangMasuk.id_barang },
-                        select: { harga: true, total_harga: true },
-                    });
-                    await prisma.barang.update({
-                        where: { id_barang: barangMasuk.id_barang },
-                        data: { 
-                            stok: { decrement: barangMasuk.kuantitas },
-                            total_harga: barang.total_harga - (barangMasuk.kuantitas * barang.harga)
-                        },
-                    });
-                }
+            // } else if(action === 'delete') {
+            //     const { where } = args;
+            //     const { id_barang_masuk } = where;
+            //     const barangMasuk = await prisma.barang_masuk.findUnique({
+            //         where: { id_barang_masuk },
+            //         select: { id_barang: true, kuantitas: true },
+            //     });
+            //     if (barangMasuk) {
+            //         const barang = await prisma.barang.findUnique({
+            //             where: { id_barang: barangMasuk.id_barang },
+            //             select: { harga: true, total_harga: true },
+            //         });
+            //         await prisma.barang.update({
+            //             where: { id_barang: barangMasuk.id_barang },
+            //             data: { 
+            //                 stok: { decrement: barangMasuk.kuantitas },
+            //                 total_harga: barang.total_harga - (barangMasuk.kuantitas * barang.harga)
+            //             },
+            //         });
+            //     }
             } else if (action === 'update') {
                 const { where, data } = args;
                 const { id_barang_masuk } = where;
@@ -104,7 +104,6 @@ const updateStokMiddleware = async (params, next) => {
             }            
         } else if (params.model === "Barang_keluar") {
             if(params.action === "create") {
-                console.log('create barang_keluar');
                 const {data} = params.args
                 const {id_barang, kuantitas} = data
 
@@ -124,7 +123,84 @@ const updateStokMiddleware = async (params, next) => {
                         }
                     }
                 })
-            } 
+            } else if (params.action === 'update') {
+                const { where, data } = params.args;
+                const { id_barang_keluar } = where;
+                const { kuantitas } = data;
+            
+                if (kuantitas !== undefined) {
+                    const existingBarangKeluar = await prisma.barang_keluar.findUnique({
+                        where: { id_barang_keluar },
+                        select: { id_barang: true, kuantitas: true, barang:true },
+                    });
+            
+            
+                    const barang = await prisma.barang.findUnique({
+                        where: { id_barang: existingBarangKeluar.id_barang },
+                        select: { id_barang: true, harga: true, stok: true, total_harga: true },
+                    });
+
+            
+                    const existingKuantitas = existingBarangKeluar.kuantitas;
+                    const difference = kuantitas - existingKuantitas;
+            
+                    if (data.id_barang && data.id_barang !== existingBarangKeluar.id_barang) {
+                        const newBarang = await prisma.barang.findUnique({
+                            where: { id_barang: data.id_barang },
+                            select: { id_barang: true, harga: true, stok: true, total_harga: true },
+                        });
+            
+                        await prisma.barang.update({
+                            where: { id_barang: existingBarangKeluar.id_barang },
+                            data: {
+                                stok: { increment: existingKuantitas },
+                                total_harga: { increment: existingKuantitas * barang.harga }
+                            }
+                        });
+            
+                        await prisma.barang.update({
+                            where: { id_barang: data.id_barang },
+                            data: {
+                                stok: { decrement: kuantitas },
+                                total_harga: { decrement: kuantitas * newBarang.harga }
+                            }
+                        });
+                    } else {
+                        await prisma.barang.update({
+                            where: { id_barang: barang.id_barang },
+                            data: {
+                                stok: { decrement: difference },
+                                total_harga: { decrement: difference * existingBarangKeluar.barang.harga }
+                            }
+                        });
+                    }
+                }
+            } else if(params.action === 'delete') {
+                const { where } = params.args;
+                const { id_barang_keluar } = where;
+
+                const barangKeluar = await prisma.barang_keluar.findUnique({
+                    where: { id_barang_keluar },
+                    select: { id_barang: true, kuantitas: true },
+                });
+
+                const { id_barang, kuantitas } = barangKeluar;
+                const barang = await prisma.barang.findUnique({
+                    where: { id_barang },
+                    select: { harga: true, stok: true, total_harga: true },
+                });
+
+                const { harga, stok } = barang;
+                const stokBaru = stok + kuantitas;
+                const totalHargaBaru = stokBaru * harga;
+                await prisma.barang.update({
+                    where: { id_barang },
+                    data: {
+                        stok: {increment: barangKeluar.kuantitas},
+                        total_harga: totalHargaBaru,
+                    },
+                });
+            }
         }
     return await next(params)
     } catch (error) {

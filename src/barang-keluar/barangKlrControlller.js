@@ -1,4 +1,4 @@
-const {tampilBarangKeluar, tambahBarangKeluar, updateBarangKeluar} = require('./barangKlrServices')
+const {tampilBarangKeluar, tambahBarangKeluar, updateBarangKeluar, hapusBarangKeluar} = require('./barangKlrServices')
 const router = require('express').Router()
 
 router.get('/', async(req, res, next)=> {
@@ -26,6 +26,16 @@ router.put('/update/:id_barang_keluar', async(req, res, next)=> {
         const {id_barang_keluar} = req.params
         const {id_barang, id_pelanggan, kuantitas, tanggal_keluar} = req.body
         const {status, msg} = await updateBarangKeluar(id_barang_keluar, id_barang, id_pelanggan, kuantitas, tanggal_keluar)
+        res.status(status).json(msg)
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.delete('/delete/:id_barang_keluar', async(req, res,next)=> {
+    try {
+        const {id_barang_keluar} = req.params
+        const {status, msg} = await hapusBarangKeluar(id_barang_keluar)
         res.status(status).json(msg)
     } catch (error) {
         next(error)
