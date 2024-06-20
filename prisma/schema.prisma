@@ -57,8 +57,18 @@ model Barang_keluar {
     kuantitas        Int
     tanggal_keluar   DateTime
     total_harga      Int
+    terkirim         Boolean @default(false)
     createdAt        DateTime @default(now())
     updatedAt        DateTime @updatedAt
     barang           Barang    @relation(fields: [id_barang], references: [id_barang], onUpdate: Cascade, onDelete: Cascade)
     pelanggan        Pelanggan @relation(fields: [id_pelanggan], references: [id_pelanggan], onDelete: Cascade, onUpdate: Cascade)
+    Pengiriman       Pengiriman?
+}
+
+model Pengiriman {
+    id_pengiriman       String @id
+    id_barang_keluar    String @unique
+    tanggal_pengiriman  DateTime?
+    status              String
+    barang_keluar       Barang_keluar  @relation(fields: [id_barang_keluar], references: [id_barang_keluar], onDelete: Cascade)
 }

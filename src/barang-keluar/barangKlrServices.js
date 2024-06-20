@@ -1,7 +1,6 @@
-const {getAll, findByIdBarangKeluar, insertData, update, getByfirstIdBarang, remove} = require('./barangKlrRepository')
+const {getAll, findByIdBarangKeluar, insertData, update, getByfirstIdBarang, remove, updateStatus} = require('./barangKlrRepository')
 const {findByIdBarang} = require('../barang/barangRepository')
-const {findByIdPelanggan} = require('../pelanggan/pelangganRepository')
-
+const {findByIdPelanggan} = require('../pelanggan/pelangganRepository');
 
 const tampilBarangKeluar = async()=>{
     try {
@@ -137,9 +136,42 @@ const hapusBarangKeluar = async(id_barang_keluar)=> {
     };
 }
 
+const kirimBarang = async (id_barang_keluar) => {
+    if(!id_barang_keluar) {
+        return {
+            status: 404,
+            msg: "id pengiriman tidak boleh kosong",
+        }
+    }
+    const barangKeluar = await findByIdBarangKeluar(id_barang_keluar)
+    if(!barangKeluar) {
+        return {
+            status: 404,
+            msg: 'barang tidak ditemukan'
+        }
+    }
+
+    if(barangKeluar.Pengiriman.status === 'Terkirim') {
+        return {
+            status: 409,
+            msg: 'barang ini sudah terkirim'
+        }
+    }
+    try {
+        await updateStatus(id_barang_keluar)
+        return {
+            status: 200,
+            msg: 'Proses Dalam Pengiriman'
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 module.exports = {
     tampilBarangKeluar,
     tambahBarangKeluar,
     updateBarangKeluar,
-    hapusBarangKeluar
+    hapusBarangKeluar,
+    kirimBarang
 }
