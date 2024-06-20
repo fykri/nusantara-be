@@ -40,7 +40,7 @@ const pelanggan= require("./pelanggan/pelangganController")
 const barang_masuk = require('./barang-masuk/barangMskController')
 const barang_keluar = require('./barang-keluar/barangKlrControlller')
 const pengiriman = require('../src/Pengiriman/pengirimanController')
-const dashboard = require('../src/Dashboard/dashboardController')
+const dashboard = require('../src/dashboard/dashboardController')
 app.use("/", user);
 app.use('/barang', barang)
 app.use('/barang-masuk', barang_masuk)
