@@ -1,6 +1,6 @@
-const {hitungBarangMasuk, hitungBarangKeluar, hitungBrgTerkirim} = require('./dashboardRepository')
+const {hitungBarangMasuk, hitungBarangKeluar, hitungBrgTerkirim, hitungBarang} = require('./dashboardRepository')
 
-const hitungJmlRecBarangMasuk = async()=> {
+const hitungStokBarangMasuk = async()=> {
     try {
         const barangMasuk = await hitungBarangMasuk();
         return {
@@ -15,7 +15,23 @@ const hitungJmlRecBarangMasuk = async()=> {
     }
 }
 
-const hitungJmlRecBarangKeluar = async()=> {
+const hitungStokBarang = async()=> {
+    try {
+        const barang = await hitungBarang();
+        return {
+            status: 200,
+            msg: 'berhasil',
+            data: {
+                barang
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+const hitungStokBarangKeluar = async()=> {
     try {
         const barangKeluar = await hitungBarangKeluar();
         return {
@@ -30,7 +46,7 @@ const hitungJmlRecBarangKeluar = async()=> {
     }
 }
 
-const hitungJmlRecBarangTerkirim = async()=> {
+const hitungStokBarangTerkirim = async()=> {
     try {
         const barangTerkirim = await hitungBrgTerkirim();
         return {
@@ -46,7 +62,8 @@ const hitungJmlRecBarangTerkirim = async()=> {
 }
 
 module.exports = {
-    hitungJmlRecBarangMasuk,
-    hitungJmlRecBarangKeluar,
-    hitungJmlRecBarangTerkirim
+    hitungStokBarangMasuk,
+    hitungStokBarangKeluar,
+    hitungStokBarangTerkirim,
+    hitungStokBarang
 }

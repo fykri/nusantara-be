@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {kirimBarang, listPengiriman, listRiwayatPengiriman, konfirmasiPengiriman, detailTerkirim} = require('./pengirimanServices')
+const {listPengiriman, listRiwayatPengiriman, konfirmasiPengiriman, detailTerkirim} = require('./pengirimanServices')
 
 
 // Mendapatkan semua data dari ListPengiriman
