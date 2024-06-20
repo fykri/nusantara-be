@@ -17,6 +17,10 @@
             "description": "Login, Register, Logout"
         },
         {
+            "name": "Dashboard",
+            "description": "Jumlah Stok"
+        },
+        {
             "name": "Barang",
             "description": "CRUD"
         },
@@ -31,6 +35,10 @@
         {
             "name": "Barang Keluar",
             "description": "CRUD"
+        },
+        {
+            "name": "Pengiriman",
+            "description": "no description"
         }
     ],
     "paths": {
@@ -155,6 +163,77 @@
                     },
                     "401": {
                         "description": "Unauthorized Error"
+                    }
+                }
+            }
+        },
+
+        "/dashboard/jmlBarang": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "mendapatkan jumlah seluruh stok barang",
+                "description": "akses API ini buat mendapatkannya",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/dashboard/jmlBarangMasuk": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "mendapatkan jumlah seluruh stok barang yang masuk",
+                "description": "akses API ini buat mendapatkannya",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+
+        "/dashboard/jmlBarangKeluar": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "mendapatkan jumlah seluruh stok barang yang keluar",
+                "description": "akses API ini buat mendapatkannya",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+
+        "/dashboard/jmlBarangTerkirim": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "mendapatkan jumlah seluruh stok barang yang sudah terkirim",
+                "description": "akses API ini buat mendapatkannya",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
                     }
                 }
             }
@@ -716,6 +795,117 @@
                         "description": "Masukkan Id barang keluar"
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/barang-keluar/kirim/{id_barang_keluar}": {
+            "patch": {
+                "tags": [
+                    "Barang Keluar"
+                ],
+                "summary": "Kirim Barang",
+                "description": "Ketika admin klik print, maka api ini akan dijankan",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_barang_keluar",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Barang Keluar"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "409": {
+                        "description": "conflict"
+                    }
+                }
+            }
+        },
+
+
+        "/pengiriman": {
+            "get": {
+                "tags": [
+                    "Pengiriman"
+                ],
+                "summary": "mendapatkan seluruh data pengiriman",
+                "description": "akses API ini buat mendapatkannya",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/pengiriman/konfirmasi/{id_pengiriman}": {
+            "patch": {
+                "tags": [
+                    "Pengiriman"
+                ],
+                "summary": "Konfirmasi Pengiriman",
+                "description": "Ketika admin konfirmasi, maka api ini akan dijankan",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_pengiriman",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Pengiriman"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/pengiriman/riwayat-pengiriman": {
+            "get": {
+                "tags": [
+                    "Pengiriman"
+                ],
+                "summary": "mendapatkan seluruh data riwayat pengiriman",
+                "description": "akses API ini buat mendapatkannya",
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+
+        "/pengiriman/detail/{id_pengiriman}": {
+            "get": {
+                "tags": [
+                    "Pengiriman"
+                ],
+                "summary": "mendapatkan detail dari salah satu barang yang terkirim",
+                "description": "akses API ini buat mendapatkannya",
                 "responses": {
                     "200": {
                         "description": "sukses"

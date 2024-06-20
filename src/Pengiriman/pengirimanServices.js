@@ -4,7 +4,7 @@ const listPengiriman = async() => {
     try {
         const pengiriman = await dataListPengiriman();
         if (pengiriman.length === 0) {
-            return { status: 404, msg: "Oops, tabel ini masih kosong! Mulailah dengan menambahkan data baru" };
+            return { status: 404, msg: "Oops, tabel ini masih kosong!" };
         }
         return {
             status: 200,
@@ -20,7 +20,7 @@ const listRiwayatPengiriman = async() => {
     try {
         const listRiwayat = await dataListRiwayat();
         if (listRiwayat.length === 0) {
-            return { status: 404, msg: "Oops, tabel ini masih kosong! Mulailah dengan menambahkan data baru" };
+            return { status: 404, msg: "Oops, tabel ini masih kosong" };
         }
         return {
             status: 200,
@@ -67,7 +67,7 @@ const detailTerkirim = async(id_pengiriman) => {
             }
         }
         if (detailPengiriman.length === 0) {
-            return { status: 404, msg: "Oops, tabel ini masih kosong! Mulailah dengan menambahkan data baru" };
+            return { status: 404, msg: "Oops, tabel ini masih kosong!"};
         }
         
         return {
