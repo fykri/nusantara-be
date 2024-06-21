@@ -29,11 +29,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDoc))
 // End Swagger
 
 
-app.get("/user", verifyToken, (req, res) => {
-    res.send("ini halaman user");
-});
-
-
 const user = require("./user-auth/authController");
 const barang= require("./barang/barangController")
 const pelanggan= require("./pelanggan/pelangganController")
@@ -42,12 +37,12 @@ const barang_keluar = require('./barang-keluar/barangKlrControlller')
 const pengiriman = require('./pengiriman/pengirimanController')
 const dashboard = require('./dashboard/dashboardController')
 app.use("/", user);
-app.use('/barang', barang)
-app.use('/barang-masuk', barang_masuk)
-app.use('/pelanggan', pelanggan)
-app.use('/barang-keluar', barang_keluar)
-app.use('/pengiriman', pengiriman)
-app.use('/dashboard', dashboard)
+app.use('/barang', verifyToken ,barang)
+app.use('/barang-masuk', verifyToken ,barang_masuk)
+app.use('/pelanggan', verifyToken ,pelanggan)
+app.use('/barang-keluar', verifyToken ,barang_keluar)
+app.use('/pengiriman', verifyToken ,pengiriman)
+app.use('/dashboard', verifyToken ,dashboard)
 
 app.use((_req, res) => {
     return res.status(404).json({
