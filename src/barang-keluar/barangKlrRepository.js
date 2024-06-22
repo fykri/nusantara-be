@@ -41,9 +41,26 @@ const insertData = async (id_barang, id_pelanggan, kuantitas, tanggal_keluar) =>
 const findByIdBarangKeluar = async(id_barang_keluar)=> {
     return await prisma.barang_keluar.findUnique({
         where: {id_barang_keluar},
-            include: {
-                pelanggan: true,
-                Pengiriman: true
+            select: {
+                id_barang_keluar: true,
+                id_barang: true,
+                id_pelanggan: true,
+                kuantitas: true,
+                terkirim: true,
+                pelanggan: {
+                    select: {
+                        id_pelanggan: true,
+                        nama_pelanggan: true,
+                        alamat: true,
+                        no_telpon: true,
+                    }
+                },
+                Pengiriman: {
+                    select: {
+                        id_pengiriman:true,
+                        tanggal_pengiriman: true
+                    }
+                }
             }
     })
 }
