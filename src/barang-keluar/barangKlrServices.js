@@ -1,6 +1,8 @@
 const {getAll, findByIdBarangKeluar, insertData, update, getByfirstIdBarang, remove, updateStatus} = require('./barangKlrRepository')
 const {findByIdBarang} = require('../barang/barangRepository')
 const {findByIdPelanggan} = require('../pelanggan/pelangganRepository');
+const {findByIdPengiriman} = require('../pengiriman/pengirimanRepository')
+
 
 const tampilBarangKeluar = async()=>{
     try {
@@ -168,10 +170,30 @@ const kirimBarang = async (id_barang_keluar) => {
     }
 }
 
+const tampilBerdasarkanId = async (id_barang_keluar) => {
+    try {
+        const pengiriman = await findByIdBarangKeluar(id_barang_keluar)
+        if(pengiriman.length == 0) {
+            return {
+                status:404,
+                msg: 'barang tidak ditemukan'
+            }
+        }
+        return {
+            status: 200,
+            msg: 'berhasil',
+            data: pengiriman
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     tampilBarangKeluar,
     tambahBarangKeluar,
     updateBarangKeluar,
     hapusBarangKeluar,
-    kirimBarang
+    kirimBarang,
+    tampilBerdasarkanId
 }

@@ -679,6 +679,33 @@
                 }
             }
         },
+        "/barang-keluar/{id_barang_keluar}": {
+            "get": {
+                "tags": [
+                    "Barang Keluar"
+                ],
+                "summary": "Get Barang Keluar berdasarkan ID",
+                "description": "Mendapatkan Seluruh Data Barang Keluar",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_barang_keluar",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Barang Keluar"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sukses"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
         "/barang-keluar/insert": {
             "post": {
                 "tags": [

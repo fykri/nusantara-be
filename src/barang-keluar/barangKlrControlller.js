@@ -1,4 +1,4 @@
-const {tampilBarangKeluar, tambahBarangKeluar, updateBarangKeluar, hapusBarangKeluar, kirimBarang} = require('./barangKlrServices')
+const {tampilBarangKeluar, tambahBarangKeluar, updateBarangKeluar, hapusBarangKeluar, kirimBarang, tampilBerdasarkanId} = require('./barangKlrServices')
 const router = require('express').Router()
 
 router.get('/', async(req, res, next)=> {
@@ -53,4 +53,14 @@ router.patch('/kirim/:id_barang_keluar', async(req, res, next)=> {
     }
 })
 
+
+router.get('/:id_barang_keluar', async(req, res, next)=> {
+    try {
+        const {id_barang_keluar} = req.params
+        const {status, msg, data} = await tampilBerdasarkanId(id_barang_keluar)
+        res.status(status).json({msg, data})        
+    } catch (error) {
+        next(error)
+    }
+})
 module.exports = router
