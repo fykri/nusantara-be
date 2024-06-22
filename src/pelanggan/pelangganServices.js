@@ -87,7 +87,7 @@ const perbaruiPelanggan = async (id_pelanggan, nama_pelanggan, alamat, email, no
     }
 
     try {
-        const pelanggan = await getById(id_pelanggan)
+        const pelanggan = await findByIdPelanggan(id_pelanggan)
         await update(id_pelanggan, nama_pelanggan, alamat, email, no_telepon);
         return {
             status: 200,

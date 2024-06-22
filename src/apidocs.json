@@ -933,6 +933,16 @@
                 ],
                 "summary": "mendapatkan detail dari salah satu barang yang terkirim",
                 "description": "akses API ini buat mendapatkannya",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_pengiriman",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Masukkan Id Pengiriman"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "sukses"
