@@ -32,7 +32,7 @@ npm install
 npx prisma migrate dev --name init
 ```
 
-### Environment Variable Settings
+### environment variable settings
 1. Salin file `.env.example` dan beri nama `.env`:
    ```sh
    copy .env.example .env
