@@ -45,6 +45,6 @@ npx prisma migrate dev --name init
 npm run dev
 ```
 
-### Access the API
+## Access the API
 Sistem kami menggunakan "Swagger" untuk mempermudah frontend dalam mengakses API atau melakukan uji coba API backend dari sistem kami. Untuk mengaksesnya, pastikan server sudah berjalan terlebih dahulu, kemudian kunjungi URL berikut: http://localhost:2000/api-docs/
 
