@@ -18,7 +18,7 @@ Github ini merupakan bagian backend dari sistem kami, untuk melihat sisi Fronten
 ```sh
 clone https://github.com/fykri/nusantara-be.git
 ```
-### Navigate to the repository :
+### navigate to the repository :
 ```sh
 cd backend
 ```
